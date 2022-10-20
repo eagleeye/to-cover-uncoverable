@@ -1,0 +1,24 @@
+image: docker:20.10.13
+
+variables:
+  DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_CERTDIR: "/certs"
+  DOCKER_TLS_VERIFY: 1
+  DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+
+services:
+  - docker:20.10.13-dind
+
+stages:
+  - test
+
+test:
+  stage: test
+  script:
+    - echo "Running tests..."
+    - docker compose run --rm my-service-with-tests
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
