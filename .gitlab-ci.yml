@@ -18,4 +18,4 @@ test-mongo:
     - apk add docker-cli-compose
     - echo "Running tests..."
     - cd 01-mongodb
-    - npm run test:ci
+    - docker compose run --rm nodejs-app-test
