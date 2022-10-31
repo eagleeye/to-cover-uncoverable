@@ -15,10 +15,6 @@ stages:
 test:
   stage: test
   script:
+    - docker compose version
     - echo "Running tests..."
     - docker compose run --rm my-service-with-tests
-  artifacts:
-    reports:
-      coverage_report:
-        coverage_format: cobertura
-        path: coverage/cobertura-coverage.xml
