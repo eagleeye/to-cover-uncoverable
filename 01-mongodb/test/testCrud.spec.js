@@ -6,7 +6,7 @@ describe('testCrud.spec.js', function () {
    before('start server and clean collection', async () => {
       const client = new MongoClient('mongodb://mongodb:27017');
       const db = client.db('mainDb');
-      await db.collection('pets').drop();
+      await db.collection('pets').drop().catch(() => {}); //ns can be not present
       await service();
    });
 

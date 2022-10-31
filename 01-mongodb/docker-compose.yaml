@@ -3,6 +3,11 @@ version: "3.8"
 services:
   mongodb:
     image: mongo:6.0.2-focal
+    healthcheck:
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')", "--quiet" ]
+      interval: 10s
+      timeout: 10s
+      retries: 3
   nodejs-app-test:
     build: .
     entrypoint: npm test
@@ -11,5 +16,6 @@ services:
       - ./src:/usr/src/app/src
       - ./.mocharc.js:/usr/src/app/.mocharc.js
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
 
