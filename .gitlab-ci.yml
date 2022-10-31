@@ -15,7 +15,7 @@ stages:
 test:
   stage: test
   script:
-    - apt-get update && apt-get install docker-compose-plugin
+    - apk add docker-cli-compose
     - docker compose version
     - echo "Running tests..."
     - docker compose run --rm my-service-with-tests
