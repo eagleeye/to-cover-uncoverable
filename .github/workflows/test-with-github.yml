@@ -8,6 +8,6 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - run: cd 01-mongodb
       - name: run mongo tests
+        working-directory: ./01-mongodb
         run: docker compose run --rm nodejs-app-test
