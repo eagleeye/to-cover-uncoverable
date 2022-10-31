@@ -6,7 +6,7 @@ jobs:
   test-mongodb-service:
     steps:
       - name: Install Compose
-        uses: ndeloof/install-docker-compose
+        uses: ndeloof/install-compose-action@v0.0.1
       - name: Check out repository code
         uses: actions/checkout@v3
       - run: cd 01-mongodb
