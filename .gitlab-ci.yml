@@ -10,12 +10,19 @@ services:
   - docker:20.10.13-dind
 
 stages:
-  - test-mongo
+  - test
+
+before_script:
+  - apk add docker-cli-compose
 
 test-mongo:
-  stage: test-mongo
+  stage: test
   script:
-    - apk add docker-cli-compose
-    - echo "Running tests..."
     - cd 01-mongodb
+    - docker compose run --rm nodejs-app-test
+
+test-kafka:
+  stage: test
+  script:
+    - cd 02-kafka
     - docker compose run --rm nodejs-app-test

@@ -8,6 +8,15 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - name: run mongo tests
+      - name: run kafka tests
         working-directory: ./01-mongodb
+        run: docker compose run --rm nodejs-app-test
+
+  test-kafka-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: run kafka tests
+        working-directory: ./02-kafka
         run: docker compose run --rm nodejs-app-test
