@@ -9,10 +9,13 @@ const kafka = new Kafka({
 });
 
 describe('testCrud.spec.js', function () {
+   let consumer, admin;
+
    before('start server and reset offset', async () => {
-      const client = new MongoClient('mongodb://mongodb:27017');
-      const db = client.db('mainDb');
-      await db.collection('pets').drop().catch(() => {}); //ns can be not present
+      consumer = kafka.consumer({ groupId: 'test-group-1' });
+      admin = kafka.admin();
+      await admin.connect();
+      await ensureTopic(admin, topic);
       await service();
    });
 
@@ -34,5 +37,19 @@ async function getLastKafkaMessage({ consumer, topic, offset }) {
          },
       });
       consumer.seek({ topic, partition: 0, offset });
+   });
+}
+
+async function ensureTopic(admin, topic) {
+   await admin.createTopics({
+      waitForLeaders: true,
+      topics: [
+         {
+            topic,
+            configEntries: [
+               { name: 'max.message.bytes', value: "8000000" }
+            ]
+         },
+      ],
    });
 }
