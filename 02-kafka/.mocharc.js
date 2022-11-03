@@ -1,4 +1,4 @@
 module.exports = {
-    timeout: 4000,
+    timeout: 20000,
     exit: true
 }

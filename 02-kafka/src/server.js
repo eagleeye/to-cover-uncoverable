@@ -1,22 +1,21 @@
+process.env.KAFKAJS_NO_PARTITIONER_WARNING = 1;
 const express = require('express');
 const app = express()
 const { Kafka } = require('kafkajs');
 
 const kafka = new Kafka({
-    clientId: 'eventscollector-test',
-    brokers,
-    logLevel: kafkaLogLevel.ERROR,
+    clientId: 'node-app',
+    brokers: ['kafka:9092']
 });
+const producer = kafka.producer();
 
 const asyncHandler = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
 
-app.get('/pets/:id', asyncHandler(async (req, res) => {
-    const pet = await collection.findOne({_id: req.params.id});
-    res.json(pet);
-}));
-
 app.post('/pets', express.json(), asyncHandler(async (req, res) => {
-    await collection.insertOne(req.body);
+    await producer.send({
+        topic: 'zoo',
+        messages: [{ value: JSON.stringify(req.body)}],
+    })
     res.sendStatus(201);
 }));
 
@@ -26,10 +25,8 @@ app.use((err, req, res, next) => {
 });
 
 const serviceStart = async function() {
-    await client.connect();
+    await producer.connect();
     await listen(8080);
-    db = client.db('mainDb');
-    collection = db.collection('pets');
 }
 
 function listen(port) {

@@ -7,6 +7,7 @@ const kafka = new Kafka({
    clientId: 'node-app-test',
    brokers: ['kafka:9092']
 });
+const topic = 'zoo';
 
 describe('testCrud.spec.js', function () {
    let consumer, admin;
@@ -19,10 +20,12 @@ describe('testCrud.spec.js', function () {
       await service();
    });
 
-   it('should create object on POST and available on GET', async () => {
+   it('should create object on POST and available on CONSUME', async () => {
+      const offset = await getCurrentOffset(admin, topic);
       const _id = '00000020f51bb4362eee2a4d';
       await axios.post('http://localhost:8080/pets', {name: 'Patron', _id});
-      const { data } = await axios.get(`http://localhost:8080/pets/${_id}`);
+      const message = await getLastKafkaMessage({ consumer, topic, offset });
+      const data = JSON.parse(message.value.toString());
       expect(data).to.be.eql({name: 'Patron', _id});
    });
 });
@@ -52,4 +55,9 @@ async function ensureTopic(admin, topic) {
          },
       ],
    });
+}
+
+async function getCurrentOffset(admin, topic) {
+   const offsets = await admin.fetchTopicOffsets(topic);
+   return offsets[0].high;
 }
