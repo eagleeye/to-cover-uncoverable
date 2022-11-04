@@ -1,5 +1,5 @@
 const express = require('express');
-const app = express()
+const app = express();
 const { MongoClient } = require('mongodb');
 const client = new MongoClient('mongodb://mongodb:27017');
 let db, collection;
