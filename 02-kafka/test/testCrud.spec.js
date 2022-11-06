@@ -46,14 +46,9 @@ async function getLastKafkaMessage({ consumer, topic, offset }) {
 async function ensureTopic(admin, topic) {
    await admin.createTopics({
       waitForLeaders: true,
-      topics: [
-         {
-            topic,
-            configEntries: [
-               { name: 'max.message.bytes', value: "8000000" }
-            ]
-         },
-      ],
+      topics: [{
+            topic: 'zoo'
+      }],
    });
 }
 

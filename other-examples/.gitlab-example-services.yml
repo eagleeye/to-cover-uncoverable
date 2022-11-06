@@ -1,0 +1,11 @@
+container-job:
+  variables:
+    POSTGRES_PASSWORD: postgres
+    POSTGRES_HOST: postgres
+    POSTGRES_PORT: 5432
+  image: node:10.18-jessie
+  services:
+    - postgres
+  script:
+    - npm ci
+    - node client.js
