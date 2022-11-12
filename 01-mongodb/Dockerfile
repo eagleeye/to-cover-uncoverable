@@ -8,6 +8,4 @@ RUN npm ci
 
 COPY . ./
 
-RUN pwd
-
 ENTRYPOINT node src/server.js
