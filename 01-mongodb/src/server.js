@@ -12,6 +12,9 @@ app.get('/pets/:id', asyncHandler(async (req, res) => {
 }));
 
 app.post('/pets', express.json(), asyncHandler(async (req, res) => {
+    if (!req.body.name) {
+        return res.status(400).send('Name is missing');
+    }
     await collection.insertOne(req.body);
     res.sendStatus(201);
 }));
@@ -21,7 +24,7 @@ app.use((err, req, res, next) => {
     res.sendStatus(500);
 });
 
-const serviceStart = async function() {
+async function startService() {
     await client.connect();
     await listen(8080);
     db = client.db('mainDb');
@@ -36,4 +39,4 @@ function listen(port) {
     });
 }
 
-module.exports = serviceStart;
+module.exports = { startService };

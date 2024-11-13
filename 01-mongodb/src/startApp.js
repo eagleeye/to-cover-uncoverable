@@ -1,3 +1,3 @@
-const server = require('server');
+const { serviceStart } = require('server');
 
-server().catch(e => throw e);
+serviceStart();
