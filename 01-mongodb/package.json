@@ -1,7 +1,7 @@
 {
-  "name": "01-mongodb",
+  "name": "to-cover-uncoverable",
   "version": "1.0.0",
-  "description": "",
+  "description": "Demo project to show how to run tests using Node.js, Docker, Docker compose, Github Action Or Gitlab CI",
   "main": "index.js",
   "scripts": {
     "test": "mocha",
@@ -19,5 +19,6 @@
     "axios": "1.1.3",
     "chai": "4.3.6",
     "mocha": "10.0.0"
-  }
+  },
+  "private": "true"
 }
